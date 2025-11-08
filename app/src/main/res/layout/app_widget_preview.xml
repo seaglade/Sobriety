@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:theme="@style/Theme.Sobriety.Material3"
+    android:background="?attr/cardColor"
+    android:paddingHorizontal="20dp">
+
+
+    <TextView
+        android:id="@+id/widgetAddictionName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Addiction Name"
+        android:gravity="center"
+        android:textColor="?attr/colorTextOnCard"
+        android:textSize="@dimen/text_size_medium"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/widgetAddictionTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="2 days 5 hours"
+        android:gravity="center"
+        android:textColor="?attr/colorTextOnCard"
+        android:textSize="@dimen/text_size_small"
+         />
+
+    <TextView
+        android:id="@+id/widgetMilestoneText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:text="Next milestone: 1 Weeks"
+        android:gravity="center"
+        android:textColor="?attr/colorTextOnCard"
+        android:textSize="@dimen/text_size_small"
+        />
+
+    <ProgressBar
+        android:id="@+id/widgetMilestoneProgress"
+        style="@android:style/Widget.Material.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleY="2"
+        android:layout_marginTop="2dp"
+        android:indeterminate="false"
+        android:max="1000"
+        android:progress="200"
+        android:progressTint="?attr/colorIconOnCard"
+         />
+
+
+</LinearLayout>

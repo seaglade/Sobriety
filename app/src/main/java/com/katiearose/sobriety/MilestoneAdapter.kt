@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.katiearose.sobriety.databinding.ListItemMilestoneBinding
 import com.katiearose.sobriety.shared.Addiction
 import com.katiearose.sobriety.shared.SortMode
+import com.katiearose.sobriety.utils.convertMilestoneToString
 import com.katiearose.sobriety.utils.getDateFormatPattern
 import com.katiearose.sobriety.utils.getHideCompletedMilestonesPref
 import com.katiearose.sobriety.utils.getSharedPref
@@ -59,16 +60,7 @@ class MilestoneAdapter(
 
     override fun onBindViewHolder(holder: MilestoneViewHolder, position: Int) {
         val milestone = currentList[position]
-        holder.milestone.text = StringBuilder(milestone.first.toString()).append(" ").append(
-            when (milestone.second) {
-                DateTimeUnit.HOUR -> context.getString(R.string.unit_hour)
-                DateTimeUnit.DAY -> context.getString(R.string.unit_day)
-                DateTimeUnit.WEEK -> context.getString(R.string.unit_week)
-                DateTimeUnit.MONTH -> context.getString(R.string.unit_month)
-                DateTimeUnit.YEAR -> context.getString(R.string.unit_year)
-                else -> "Unsupported"
-            }
-        )
+        holder.milestone.text = context.convertMilestoneToString(milestone)
         val calculatedPair = addiction.calculateMilestoneProgressionPercentage(milestone)
         holder.milestoneProgressBar.progress = calculatedPair.second
         if (holder.milestoneProgressBar.progress == 100) {

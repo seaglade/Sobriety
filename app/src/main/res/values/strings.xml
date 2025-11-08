@@ -141,4 +141,8 @@
     <string name="license">License</string>
     <string name="average_attempts_window_pref">Number of Relapses (0 to disable)</string>
     <string name="summary">Summary</string>
+    <string name="next_milestone">Next milestone</string>
+    <string name="no_next_milestone">No upcoming milestones</string>
+    <string name="select_addiction_for_widget">Select addiction to display</string>
+    <string name="sub_1hour">&lt;1 hour</string>
 </resources>

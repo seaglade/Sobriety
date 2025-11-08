@@ -19,6 +19,9 @@ data class Addiction(
     val milestones: LinkedHashSet<Pair<Int, DateTimeUnit>>,
 ) {
 
+    val creationTimestamp: Long
+        get() = history.keys.first()
+
     enum class Priority {
         HIGH, MEDIUM, LOW
     }
@@ -56,6 +59,22 @@ data class Addiction(
             calculateAvgRelapseDuration(range)
         else
             null
+    }
+
+    fun getNextMilestone(): Pair<Int, DateTimeUnit>? {
+        val now = Clock.System.now().toEpochMilliseconds()
+        return milestones
+            .mapNotNull { inputPair ->
+                val (quantity, unit) = inputPair
+                val calculatedInstant = runCatching {
+                    history.keys.last() + quantity * unit.toMillis()
+                }.getOrNull()
+                calculatedInstant?.let { Pair(it, inputPair) }
+            }.filter { (calculatedTime, _) ->
+                calculatedTime > now
+            }
+            .minByOrNull { (calculatedTime, _) -> calculatedTime }
+            ?.second
     }
 
     /**

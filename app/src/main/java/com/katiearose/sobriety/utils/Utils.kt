@@ -59,7 +59,7 @@ fun Context.convertSecondsToString(given: Long): String {
 }
 
 // Expects start and end timestamps in epoch milliseconds
-fun Context.convertRangeToString(start: Long, end: Long = Instant.now().toEpochMilli()): String {
+fun Context.convertRangeToString(start: Long, end: Long = Instant.now().toEpochMilli(), secondPrecision: Boolean = true): String {
     if (start == -1L) return ""
     val startDate: LocalDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(start),
         TimeZone.getDefault().toZoneId())
@@ -90,11 +90,21 @@ fun Context.convertRangeToString(start: Long, end: Long = Instant.now().toEpochM
     if (w != 0) stringBuilder.append(resources.getQuantityString(R.plurals.weeks, w, w)).append(" ")
     if (d != 0) stringBuilder.append(resources.getQuantityString(R.plurals.days, d, d)).append(" ")
     if (h != 0) stringBuilder.append(resources.getQuantityString(R.plurals.hours, h, h)).append(" ")
-    if (m != 0) stringBuilder.append(resources.getQuantityString(R.plurals.minutes, m, m)).append(" ")
-    if (!(y == 0 && mo == 0 && w == 0 && d == 0 && h == 0 && m == 0)) stringBuilder.append(
-        getString(R.string.and)
-    ).append(" ")
-    stringBuilder.append(resources.getQuantityString(R.plurals.seconds, s, s))
+    if (m != 0 && secondPrecision) stringBuilder.append(resources.getQuantityString(R.plurals.minutes, m, m)).append(" ")
+    if(secondPrecision){
+        if (!(y == 0 && mo == 0 && w == 0 && d == 0 && h == 0 && m == 0)) stringBuilder.append(
+            getString(R.string.and)
+        ).append(" ")
+        stringBuilder.append(resources.getQuantityString(R.plurals.seconds, s, s))
+    }
+    else if(stringBuilder.length >2) {
+        //Remove previously inserted comma and space at end
+        stringBuilder.deleteCharAt(stringBuilder.length-2)
+    }
+    else {
+        stringBuilder.append(getString(R.string.sub_1hour))
+    }
+
     return stringBuilder.toString()
 }
 
@@ -138,6 +148,19 @@ fun convertRangeToPercentList(start: Long, end: Long = Instant.now().toEpochMill
             it.third
         )
     }
+}
+
+fun Context.convertMilestoneToString(milestone: Pair<Int, DateTimeUnit>): String {
+    return StringBuilder(milestone.first.toString()).append(" ").append(
+        when (milestone.second) {
+            DateTimeUnit.HOUR -> resources.getString(R.string.unit_hour)
+            DateTimeUnit.DAY -> resources.getString(R.string.unit_day)
+            DateTimeUnit.WEEK -> resources.getString(R.string.unit_week)
+            DateTimeUnit.MONTH -> resources.getString(R.string.unit_month)
+            DateTimeUnit.YEAR -> resources.getString(R.string.unit_year)
+            else -> "Unsupported"
+        }
+    ).toString()
 }
 
 fun Context.showConfirmDialog(title: String, message: String, action: () -> Unit) {
