@@ -12,6 +12,7 @@
     <string name="priority">Priority</string>
     <string name="edit_priority">Edit priority</string>
     <string name="edit">Edit</string>
+    <string name="rename">Rename</string>
     <string name="edit_priority_success">Successfully edited addiction priority</string>
     <string name="high">High</string>
     <string name="medium">Medium</string>
@@ -49,10 +50,21 @@
         <item quantity="other">%d seconds</item>
     </plurals>
     <string name="recent_avg">Recent Average: %s</string>
+    <string name="longest_streak">Longest streak</string>
+    <string name="total_clean">Total clean time</string>
     <string name="delete">Delete</string>
     <string name="delete_confirm">Do you really want to delete entry \"%s\"?\nThis action cannot be undone.</string>
     <string name="relapse">Relapse</string>
     <string name="relapse_confirm">Log relapse of \"%s\"?</string>
+    <string name="relapse_when">When did you relapse?</string>
+    <string name="relapse_now">Now</string>
+    <string name="relapse_previous">Choose a previous time</string>
+    <string name="pick_relapse_date">Pick relapse date</string>
+    <string name="pick_relapse_time">Pick relapse time</string>
+    <string name="error_future_relapse">Pick a time that is not in the future</string>
+    <string name="error_relapse_before_start">Pick a time after your current attempt started</string>
+    <string name="track_when">When did you start this attempt?</string>
+    <string name="error_track_before_end">Pick a time after your previous attempt ended</string>
     <string name="stop">Stop</string>
     <string name="stop_confirm">Stop abstaining from \"%s\"?</string>
     <string name="stop_notice">Stopped at: %s\nYour attempt lasted %s</string>
@@ -84,6 +96,11 @@
     <string name="start_tracking_now">Are you ready to start tracking \"%s\" now?</string>
     <string name="misc">Miscellaneous</string>
     <string name="daily_notes">Daily notes</string>
+    <string name="search_notes">Search notes</string>
+    <plurals name="notes_count">
+        <item quantity="one">%d note</item>
+        <item quantity="other">%d notes</item>
+    </plurals>
     <string name="add_note">Add note</string>
     <string name="note">Note</string>
     <string name="note_hint">Enter notes…</string>
@@ -127,13 +144,17 @@
     <string name="general">General</string>
     <string name="date_format">Date format</string>
     <!--TODO think of a less awkward way to say this-->
-    <string name="add_note_after_relapse">Looks like you just relapsed.\nWould you like to write down what happened today?\nThis will be saved in the \"Daily notes\" section with today\'s date.</string>
+    <string name="add_note_after_relapse">Looks like you just relapsed.\nWould you like to write down what happened?\nThis will be saved in the \"Daily notes\" section with this date:</string>
     <string name="dont_show_dialog_again">Don\'t show this dialog again</string>
     <string name="add_note_after_relapse_pref">Add note after relapse</string>
-    <string name="add_note_after_relapse_pref_summary">When logging a relapse, offer to make (or edit, if it already exists) a note for that day</string>
+    <string name="add_note_after_relapse_pref_summary">When logging a relapse, offer to add a new note for that day</string>
     <string name="data">Data</string>
     <string name="data_export">Export</string>
     <string name="data_import">Import</string>
+    <string name="import_title">Import data</string>
+    <string name="import_merge">Merge (skip duplicates)</string>
+    <string name="import_replace">Replace existing data</string>
+    <string name="import_empty_file">No habits found in the file</string>
     <string name="about">About</string>
     <string name="version">Version</string>
     <string name="report_an_issue">Report an issue</string>

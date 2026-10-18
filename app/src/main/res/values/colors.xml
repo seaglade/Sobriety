@@ -12,4 +12,12 @@
     <color name="green">#00cc00</color>
     <color name="sobriety_bg">#a382ce</color>
     <color name="gray">#a6a6a6</color>
+
+    <!-- Priority chip container/on-container pairs (light). Text-on-chip contrast >= 4.5:1. -->
+    <color name="priority_high_bg">#FFDAD6</color>
+    <color name="priority_high_fg">#410002</color>
+    <color name="priority_medium_bg">#FFE0B2</color>
+    <color name="priority_medium_fg">#5D4200</color>
+    <color name="priority_low_bg">#C8E6C9</color>
+    <color name="priority_low_fg">#0D3B12</color>
 </resources>

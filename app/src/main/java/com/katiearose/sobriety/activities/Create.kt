@@ -23,6 +23,8 @@ import java.util.*
 class Create : AppCompatActivity() {
     private var startDateTime = ZonedDateTime.now(ZoneId.systemDefault())
     private var priority = Addiction.Priority.MEDIUM
+    // Whether the user explicitly chose a date/time; if not, "now" is used on create
+    private var timeChosen = false
 
     private lateinit var names: ArrayList<String>
     private lateinit var binding: ActivityCreateBinding
@@ -41,6 +43,7 @@ class Create : AppCompatActivity() {
         savedInstanceState?.run {
             startDateTime = getSerializable("current_date_time") as ZonedDateTime
             priority = Addiction.Priority.values()[getInt("current_priority")]
+            timeChosen = getBoolean("time_chosen")
         }
         checkFutureDateTime()
 
@@ -92,6 +95,7 @@ class Create : AppCompatActivity() {
                 startDateTime.toLocalTime(),
                 ZoneId.systemDefault()
             )
+            timeChosen = true
             binding.tvDate.text = startDateTime.toLocalDate().toString()
             checkFutureDateTime()
         }
@@ -110,6 +114,7 @@ class Create : AppCompatActivity() {
                 LocalTime.of(timePicker.hour, timePicker.minute),
                 ZoneId.systemDefault()
             )
+            timeChosen = true
             binding.tvTime.text = startDateTime.toLocalTime().toString()
             checkFutureDateTime()
         }
@@ -117,8 +122,8 @@ class Create : AppCompatActivity() {
     }
 
     private fun create() {
-        val name = binding.etTitle.text.toString()
-        val nameExists = names.contains(name)
+        val name = binding.etTitle.text.toString().trim()
+        val nameExists = names.any { it.equals(name, ignoreCase = true) }
 
         //Don't allow creating without a name, or with a duplicate name
         if (name.isBlank() || nameExists) {
@@ -128,8 +133,9 @@ class Create : AppCompatActivity() {
             return
         }
 
+        val instant = if (timeChosen) startDateTime.toInstant().toEpochMilli() else Instant.now().toEpochMilli()
         val intent = Intent()
-            .putExtra("instant", startDateTime.toInstant().toEpochMilli())
+            .putExtra("instant", instant)
             .putExtra("name", name)
             .putExtra("priority", priority.ordinal)
         setResult(Activity.RESULT_OK, intent)
@@ -141,6 +147,7 @@ class Create : AppCompatActivity() {
         outState.run {
             putSerializable("current_date_time", startDateTime)
             putInt("current_priority", priority.ordinal)
+            putBoolean("time_chosen", timeChosen)
         }
     }
 }

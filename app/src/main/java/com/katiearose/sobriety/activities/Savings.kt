@@ -105,8 +105,9 @@ class Savings : AppCompatActivity() {
         }
         dialogViewBinding.btnSaveSaving.setOnClickListener {
             val inputFields = listOf(dialogViewBinding.savingsAmountInputLayout, dialogViewBinding.unitInputLayout, dialogViewBinding.savingsNameInputLayout)
+            val savingsAmount = dialogViewBinding.savingsAmountInput.text.toString().toDoubleOrNull()
             when {
-                dialogViewBinding.savingsAmountInput.isInputEmpty() -> {
+                savingsAmount == null -> {
                     dialogViewBinding.savingsAmountInputLayout.error = getString(R.string.error_empty_amount)
                     inputFields.forEach { if (it !== dialogViewBinding.savingsAmountInputLayout) it.error = null }
                 }
@@ -117,7 +118,7 @@ class Savings : AppCompatActivity() {
                 else -> {
                     if (existingSaving != null) {
                         addiction.savings[existingSaving.first] = Pair(
-                            dialogViewBinding.savingsAmountInput.text.toString().toDouble(),
+                            savingsAmount,
                             dialogViewBinding.unitInput.text.toString())
                         update()
                         dialog.dismiss()
@@ -128,7 +129,7 @@ class Savings : AppCompatActivity() {
                         } else {
                             addiction.savings[dialogViewBinding.savingsNameInput.text.toString()] =
                                 Pair(
-                                    dialogViewBinding.savingsAmountInput.text.toString().toDouble(),
+                                    savingsAmount,
                                     dialogViewBinding.unitInput.text.toString())
                             update()
                             dialog.dismiss()

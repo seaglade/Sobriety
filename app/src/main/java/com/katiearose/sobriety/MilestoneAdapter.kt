@@ -28,12 +28,12 @@ class MilestoneAdapter(
         override fun areItemsTheSame(
             oldItem: Pair<Int, DateTimeUnit>,
             newItem: Pair<Int, DateTimeUnit>
-        ): Boolean = oldItem.first == newItem.first
+        ): Boolean = oldItem == newItem
 
         override fun areContentsTheSame(
             oldItem: Pair<Int, DateTimeUnit>,
             newItem: Pair<Int, DateTimeUnit>
-        ): Boolean = oldItem.second == newItem.second
+        ): Boolean = oldItem == newItem
     }) {
     private val preferences = context.getSharedPref()
 
@@ -71,7 +71,7 @@ class MilestoneAdapter(
         )
         val calculatedPair = addiction.calculateMilestoneProgressionPercentage(milestone)
         holder.milestoneProgressBar.progress = calculatedPair.second
-        if (holder.milestoneProgressBar.progress == 100) {
+        if (holder.milestoneProgressBar.progress >= 100) {
             holder.milestoneTime.textResource = R.string.completed
         } else {
             holder.milestoneTime.text =

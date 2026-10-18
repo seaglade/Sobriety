@@ -6,9 +6,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.InputType
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.katiearose.sobriety.BuildConfig
 import com.katiearose.sobriety.R
 import com.katiearose.sobriety.shared.CacheHandler
@@ -78,14 +80,44 @@ class Settings : AppCompatActivity() {
 
             val getImport = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
                 if (uri != null) {
-                    cacheHandler.importData(uri) {
-                        Main.addictions.addAll(it)
+                    when (val imported = cacheHandler.importData(uri)) {
+                        // Not a valid Sobriety backup (a toast was already shown)
+                        null -> {}
+                        else -> if (imported.isEmpty()) {
+                            Toast.makeText(
+                                requireContext(),
+                                R.string.import_empty_file,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            MaterialAlertDialogBuilder(requireContext())
+                                .setTitle(R.string.import_title)
+                                .setItems(
+                                    arrayOf(
+                                        getString(R.string.import_merge),
+                                        getString(R.string.import_replace)
+                                    )
+                                ) { _, which ->
+                                    // Keep a .bak copy before touching the saved data
+                                    cacheHandler.backupCache()
+                                    if (which == 0) {
+                                        // Merge: skip habits whose name already exists (and duplicates within the file)
+                                        val seen = Main.addictions.mapTo(HashSet()) { it.name }
+                                        Main.addictions.addAll(imported.filter { seen.add(it.name) })
+                                    } else {
+                                        // Replace: only ever with a non-empty import
+                                        Main.addictions.clear()
+                                        Main.addictions.addAll(imported)
+                                    }
+                                    cacheHandler.writeCache(Main.addictions)
+                                    val intent = Intent().putExtra("import", true)
+                                    requireActivity().setResult(Activity.RESULT_OK, intent)
+                                    requireActivity().finish()
+                                }
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .show()
+                        }
                     }
-
-                    val intent = Intent()
-                        .putExtra("import", true)
-                    requireActivity().setResult(Activity.RESULT_OK, intent)
-                    requireActivity().finish()
                 }
             }
             findPreference<Preference>("data_import")?.setOnPreferenceClickListener {

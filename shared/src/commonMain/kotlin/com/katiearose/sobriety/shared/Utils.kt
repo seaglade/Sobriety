@@ -6,8 +6,6 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
-fun Instant.secondsFromNow(): Long = Clock.System.now().epochSeconds - this.epochSeconds
-
 fun DateTimeUnit.toMillis(): Long {
     return when (this) {
         is DateTimeUnit.TimeBased -> nanoseconds / 1_000_000

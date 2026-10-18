@@ -1,10 +1,12 @@
 <resources>
 
     <style name="Theme.Sobriety.Material3" parent="Theme.Material3.DynamicColors.DayNight">
-        <!-- we're not defining primary colors bc Android 12 dynamic colors -->
-        <item name="cardColor">#FACFF8</item>
-        <item name="colorTextOnCard">#1C1C1C</item>
-        <item name="colorIconOnCard">#B39DDB</item>
+        <!-- Use Material 3 surface roles so Android 12+ dynamic colours actually tint the cards -->
+        <item name="cardColor">?attr/colorSurfaceVariant</item>
+        <item name="colorTextOnCard">?attr/colorOnSurfaceVariant</item>
+        <item name="colorIconOnCard">?attr/colorOnSurfaceVariant</item>
+        <item name="actionBarStyle">@style/Widget.Sobriety.ActionBar.M3</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.Sobriety.ActionBar</item>
         <item name="alertDialogTheme">@style/AlertDialogTheme.Material3</item>
         <item name="switchPreferenceCompatStyle">@style/Preference.MaterialSwitchPreference</item>
         <item name="android:textColor">@android:color/black</item>

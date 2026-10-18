@@ -51,9 +51,8 @@ class Timeline : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         fun buildNonZeroIndicesAsString(list: List<Int>): StringBuilder = StringBuilder().apply {
             list.forEachIndexed { index, i ->
-                if (index > 0) {
-                    append(", ${i + 1}")
-                }
+                if (index > 0) append(", ")
+                append(i + 1)
             }
         }
 
@@ -81,7 +80,7 @@ class Timeline : AppCompatActivity() {
                             0 -> toast(R.string.nothing_is_chosen)
                             1 -> toast(R.string.only_one_attempt_is_chosen)
                             else -> binding.avgDuration.text = StringBuilder(getString(R.string.avg_duration))
-                                .append(" ${indices[0] + 1}")
+                                .append(" ")
                                 .append(buildNonZeroIndicesAsString(indices))
                                 .append(": ${convertSecondsToString(addiction.calculateAvgRelapseDuration(indices) / 1000)}")
                         }

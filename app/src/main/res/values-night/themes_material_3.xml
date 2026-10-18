@@ -1,9 +1,11 @@
 <resources>
 
     <style name="Theme.Sobriety.Material3" parent="Theme.Material3.DynamicColors.DayNight">
-        <item name="cardColor">#612D5E</item>
-        <item name="colorTextOnCard">#FFC5FC</item>
-        <item name="colorIconOnCard">#B164AD</item>
+        <item name="cardColor">?attr/colorSurfaceVariant</item>
+        <item name="colorTextOnCard">?attr/colorOnSurfaceVariant</item>
+        <item name="colorIconOnCard">?attr/colorOnSurfaceVariant</item>
+        <item name="actionBarStyle">@style/Widget.Sobriety.ActionBar.M3</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.Sobriety.ActionBar</item>
         <item name="alertDialogTheme">@style/AlertDialogTheme.Material3</item>
         <item name="switchPreferenceCompatStyle">@style/Preference.MaterialSwitchPreference</item>
         <item name="android:textColor">@android:color/white</item>

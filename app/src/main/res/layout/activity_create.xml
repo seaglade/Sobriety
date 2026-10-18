@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="234:2348:349"
-            android:textColor="@color/gray"
+            android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintStart_toStartOf="@id/tvPickTime"
             app:layout_constraintTop_toBottomOf="@id/tvPickTime" />
 
@@ -91,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="23.02.2017"
-            android:textColor="@color/gray"
+            android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintStart_toStartOf="@id/tvPickDate"
             app:layout_constraintTop_toBottomOf="@id/tvPickDate" />
 
@@ -123,7 +123,7 @@
             android:id="@+id/tvPriority"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/gray"
+            android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintStart_toStartOf="@id/tvPickPriority"
             app:layout_constraintTop_toBottomOf="@id/tvPickPriority" />
 

@@ -30,7 +30,7 @@ private const val MONTH = YEAR / 12
 
 fun Context.convertSecondsToString(given: Long): String {
     if (given == -1L) return ""
-    var time = given
+    var time = given.coerceAtLeast(0L)
     val s = time % MINUTE
     time -= s
     val m = (time % HOUR) / MINUTE
@@ -51,10 +51,17 @@ fun Context.convertSecondsToString(given: Long): String {
     if (d != 0L) stringBuilder.append(resources.getQuantityString(R.plurals.days, d.toInt(), d)).append(" ")
     if (h != 0L) stringBuilder.append(resources.getQuantityString(R.plurals.hours, h.toInt(), h)).append(" ")
     if (m != 0L) stringBuilder.append(resources.getQuantityString(R.plurals.minutes, m.toInt(), m)).append(" ")
-    if (!(y == 0L && mo == 0L && w == 0L && d == 0L && h == 0L && m == 0L)) stringBuilder.append(
-        getString(R.string.and)
-    ).append(" ")
-    stringBuilder.append(resources.getQuantityString(R.plurals.seconds, s.toInt(), s))
+    val hasHigherUnit = y != 0L || mo != 0L || w != 0L || d != 0L || h != 0L || m != 0L
+    if (hasHigherUnit) {
+        if (s != 0L) {
+            stringBuilder.append(getString(R.string.and)).append(" ")
+            stringBuilder.append(resources.getQuantityString(R.plurals.seconds, s.toInt(), s))
+        } else if (stringBuilder.endsWith(" ")) {
+            stringBuilder.deleteCharAt(stringBuilder.length - 1)
+        }
+    } else {
+        stringBuilder.append(resources.getQuantityString(R.plurals.seconds, s.toInt(), s))
+    }
     return stringBuilder.toString()
 }
 
@@ -91,10 +98,17 @@ fun Context.convertRangeToString(start: Long, end: Long = Instant.now().toEpochM
     if (d != 0) stringBuilder.append(resources.getQuantityString(R.plurals.days, d, d)).append(" ")
     if (h != 0) stringBuilder.append(resources.getQuantityString(R.plurals.hours, h, h)).append(" ")
     if (m != 0) stringBuilder.append(resources.getQuantityString(R.plurals.minutes, m, m)).append(" ")
-    if (!(y == 0 && mo == 0 && w == 0 && d == 0 && h == 0 && m == 0)) stringBuilder.append(
-        getString(R.string.and)
-    ).append(" ")
-    stringBuilder.append(resources.getQuantityString(R.plurals.seconds, s, s))
+    val hasHigherUnit = y != 0 || mo != 0 || w != 0 || d != 0 || h != 0 || m != 0
+    if (hasHigherUnit) {
+        if (s != 0) {
+            stringBuilder.append(getString(R.string.and)).append(" ")
+            stringBuilder.append(resources.getQuantityString(R.plurals.seconds, s, s))
+        } else if (stringBuilder.endsWith(" ")) {
+            stringBuilder.deleteCharAt(stringBuilder.length - 1)
+        }
+    } else {
+        stringBuilder.append(resources.getQuantityString(R.plurals.seconds, s, s))
+    }
     return stringBuilder.toString()
 }
 
@@ -120,23 +134,23 @@ fun convertRangeToPercentList(start: Long, end: Long = Instant.now().toEpochMill
     val nextMonth = startDate.plus(Period.of(period.years, period.months + 1, 0))
     val durationLeft = Duration.between(endDate, nextMonth)
     val daysLeft = (duration.plus(durationLeft).toDaysPart() - duration.toDaysPart()).toInt()
+    val daysTotal = period.days + daysLeft
 
     // Initially store denominator in second part of triple
     return listOf(
         // Years progress bar should never complete, but crosses 50% at 2 years
-        Triple(period.years, period.years+2, DateTimeUnit.YEAR),
+        Triple(period.years, (period.years + 2).coerceAtLeast(1), DateTimeUnit.YEAR),
         Triple(period.months, 12, DateTimeUnit.MONTH),
         // Weeks make the visualization non-whole so they are omitted
-        Triple(period.days, period.days + daysLeft, DateTimeUnit.DAY),
+        Triple(period.days, daysTotal.coerceAtLeast(1), DateTimeUnit.DAY),
         Triple(duration.toHoursPart(), 24, DateTimeUnit.HOUR),
         Triple(duration.toMinutesPart(), 60, DateTimeUnit.MINUTE),
         Triple(duration.toSecondsPart(), 60, DateTimeUnit.SECOND)
     ).map {
-        Triple(
-            it.first,
-            (1000 * it.first.toDouble().div(it.second)).toInt(),
-            it.third
-        )
+        val pct = if (it.second > 0) {
+            (1000 * it.first.toDouble() / it.second).toInt().coerceIn(0, 1000)
+        } else 0
+        Triple(it.first, pct, it.third)
     }
 }
 

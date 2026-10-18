@@ -51,9 +51,9 @@ class Milestones : AppCompatActivity() {
             val units = resources.getStringArray(R.array.time_units)
             dialogViewBinding.btnSaveMilestone.setOnClickListener {
                 val inputFields = listOf(dialogViewBinding.milestoneNumberInputLayout, dialogViewBinding.milestoneTimeUnitInputLayout)
+                val milestoneNumber = dialogViewBinding.milestoneNumberInput.text.toString().toIntOrNull()
                 when {
-                    dialogViewBinding.milestoneNumberInput.isInputEmpty() ||
-                            dialogViewBinding.milestoneNumberInput.text.toString().toInt() == 0 -> {
+                    milestoneNumber == null || milestoneNumber == 0 -> {
                         dialogViewBinding.milestoneNumberInputLayout.error = getString(R.string.error_empty_amount)
                         inputFields.forEach { if (it !== dialogViewBinding.milestoneNumberInputLayout) it.error = null }
                     }
@@ -62,7 +62,7 @@ class Milestones : AppCompatActivity() {
                         inputFields.forEach { if (it !== dialogViewBinding.milestoneTimeUnitInputLayout) it.error = null }
                     }
                     else -> {
-                        val num = dialogViewBinding.milestoneNumberInput.text.toString().toInt()
+                        val num = milestoneNumber
                         when (dialogViewBinding.unitInput.text.toString()) {
                             units[0] -> addiction.milestones.add(Pair(num, DateTimeUnit.HOUR))
                             units[1] -> addiction.milestones.add(Pair(num, DateTimeUnit.DAY))

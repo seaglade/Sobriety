@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.katiearose.sobriety.ProgressBarAdapter
+import com.katiearose.sobriety.R
 import com.katiearose.sobriety.databinding.ActivitySummaryBinding
 import com.katiearose.sobriety.shared.Addiction
 import com.katiearose.sobriety.utils.*
@@ -24,6 +25,13 @@ class Summary : AppCompatActivity() {
         addiction = Main.addictions[checkValidIntentData()]
         title = addiction.name
 
+        binding.longestStreakLabel.text = getString(R.string.longest_streak)
+        binding.longestStreak.text =
+            convertSecondsToString(addiction.longestAttemptMillis() / 1000)
+
+        binding.totalCleanLabel.text = getString(R.string.total_clean)
+        binding.totalClean.text =
+            convertSecondsToString(addiction.totalAttemptMillis() / 1000)
 
         progressAdapter = ProgressBarAdapter(addiction, this)
         binding.progressBarList.layoutManager = LinearLayoutManager(this)
@@ -32,7 +40,13 @@ class Summary : AppCompatActivity() {
         (binding.progressBarList.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
 
-    private fun update() {
-        progressAdapter.update()
+    override fun onResume() {
+        super.onResume()
+        progressAdapter.start()
+    }
+
+    override fun onPause() {
+        progressAdapter.stop()
+        super.onPause()
     }
 }

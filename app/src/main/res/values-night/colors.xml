@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Priority chip container/on-container pairs (night). Text-on-chip contrast >= 4.5:1. -->
+    <color name="priority_high_bg">#93000A</color>
+    <color name="priority_high_fg">#FFDAD6</color>
+    <color name="priority_medium_bg">#5D4200</color>
+    <color name="priority_medium_fg">#FFDEA6</color>
+    <color name="priority_low_bg">#1B5E20</color>
+    <color name="priority_low_fg">#B9F6CA</color>
+</resources>

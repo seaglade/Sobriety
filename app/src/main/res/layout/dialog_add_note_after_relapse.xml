@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:orientation="vertical"
@@ -15,6 +16,17 @@
             android:layout_height="wrap_content"
             android:text="@string/add_note_after_relapse"
             android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/note_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:layout_marginTop="10dp"
+            tools:text="October 25 2022"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/note_input_layout"

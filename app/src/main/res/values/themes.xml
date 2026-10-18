@@ -9,8 +9,11 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="cardColor">#FACFF8</item>
         <item name="colorTextOnCard">#1C1C1C</item>
-        <item name="colorIconOnCard">#B39DDB</item>
-        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
+        <item name="colorIconOnCard">#7B2D79</item>
+        <item name="actionBarStyle">@style/Widget.Sobriety.ActionBar</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.Sobriety.ActionBar</item>
+        <item name="android:statusBarColor">?attr/cardColor</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
     </style>

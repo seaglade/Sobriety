@@ -46,4 +46,14 @@
         android:padding="20dp"
         android:foreground="?attr/selectableItemBackground" />
 
+    <TextView
+        android:id="@+id/rename_addiction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/rename"
+        app:drawableStartCompat="@drawable/edit_note_24px"
+        android:drawablePadding="20dp"
+        android:padding="20dp"
+        android:foreground="?attr/selectableItemBackground" />
+
 </LinearLayout>

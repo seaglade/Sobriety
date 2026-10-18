@@ -36,8 +36,8 @@
         android:layout_toStartOf="@id/btn_expand_collapse_time"
         android:background="@drawable/ripple"
         android:src="@drawable/edit_note_24px"
-        android:contentDescription="@string/collapse"
-        android:tooltipText="@string/collapse" />
+        android:contentDescription="@string/edit"
+        android:tooltipText="@string/edit" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/time_saved_card"

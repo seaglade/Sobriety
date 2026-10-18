@@ -206,3 +206,6 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/kotlin,gradle,android,androidstudio
+
+# Local handoff/dev notes
+log.txt

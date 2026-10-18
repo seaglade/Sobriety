@@ -5,9 +5,55 @@
     android:layout_height="match_parent"
     tools:context=".activities.Summary">
 
+    <LinearLayout
+        android:id="@+id/summary_stats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/longest_streak_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="?android:attr/textColorSecondary"
+            tools:text="Longest streak" />
+
+        <TextView
+            android:id="@+id/longest_streak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="3 days, 7 hours, 9 minutes, and 36 seconds" />
+
+        <TextView
+            android:id="@+id/total_clean_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="13sp"
+            android:textColor="?android:attr/textColorSecondary"
+            tools:text="Total clean time" />
+
+        <TextView
+            android:id="@+id/total_clean"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="10 days, 2 hours" />
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/progress_bar_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/summary_stats"/>
 
 </RelativeLayout>

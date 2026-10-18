@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.katiearose.sobriety.databinding.ListItemProgressBarBinding
 import com.katiearose.sobriety.shared.Addiction
 import com.katiearose.sobriety.utils.convertRangeToPercentList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -30,9 +31,17 @@ class ProgressBarAdapter(
         ): Boolean = oldItem.first == newItem.first
     }) {
 
+    private val scope = MainScope()
+    private var job: Job? = null
+
     init {
         update()
-        MainScope().launch {
+    }
+
+    // Started/stopped by the Summary activity's lifecycle so we don't tick in the background.
+    fun start() {
+        if (job?.isActive == true) return
+        job = scope.launch {
             while (true) {
                 update()
                 delay(1000)
@@ -40,10 +49,16 @@ class ProgressBarAdapter(
         }
     }
 
+    fun stop() {
+        job?.cancel()
+        job = null
+    }
+
     fun update() {
         val list = convertRangeToPercentList(addiction.history.keys.last())
-        // Filter initial zeros
-        submitList(list.subList(list.indexOfFirst { it.first != 0 }, list.size))
+        // Filter initial zeros; if every entry is zero, show an empty list
+        val firstNonZero = list.indexOfFirst { it.first != 0 }
+        submitList(if (firstNonZero == -1) emptyList() else list.subList(firstNonZero, list.size))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProgressBarViewHolder {

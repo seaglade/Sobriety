@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="UnusedAttribute">
+
+    <TextView
+        android:id="@+id/relapse_when_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:textStyle="bold"
+        android:text="@string/relapse_when"
+        android:textSize="18sp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/relapse_now"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/relapse_now"
+        app:drawableStartCompat="@drawable/ic_baseline_play_arrow_24"
+        android:drawablePadding="20dp"
+        android:padding="20dp"
+        android:foreground="?attr/selectableItemBackground" />
+
+    <TextView
+        android:id="@+id/relapse_previous"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/relapse_previous"
+        app:drawableStartCompat="@drawable/hourglass_bottom"
+        android:drawablePadding="20dp"
+        android:padding="20dp"
+        android:foreground="?attr/selectableItemBackground" />
+
+</LinearLayout>

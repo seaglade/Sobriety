@@ -3,6 +3,7 @@ package com.katiearose.sobriety.activities
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -39,22 +40,42 @@ class DailyNotes : AppCompatActivity() {
         cacheHandler = CacheHandler(this)
 
         addiction = Main.addictions[checkValidIntentData()]
-        adapter = NoteAdapter(addiction, this, { showAddNoteDialog(true, it.first) },
-            {
+        adapter = NoteAdapter(addiction, this,
+            { date, index -> showAddNoteDialog(true, date, index) },
+            { date, index ->
                 val action: () -> Unit = {
-                    addiction.dailyNotes.remove(it.first)
+                    val notes = addiction.dailyNotes[date] ?: mutableListOf()
+                    if (index in notes.indices) notes.removeAt(index)
+                    if (notes.isEmpty()) addiction.dailyNotes.remove(date)
                     updateNotesList()
                 }
-                showConfirmDialog(getString(R.string.delete), getString(R.string.delete_note_confirm, dateFormat.format(it.first.toJavaLocalDate())), action)
+                showConfirmDialog(
+                    getString(R.string.delete),
+                    getString(R.string.delete_note_confirm, dateFormat.format(date.toJavaLocalDate())),
+                    action
+                )
             })
         binding.notesList.layoutManager = LinearLayoutManager(this)
         binding.notesList.adapter = adapter
 
-        binding.addNoteFab.setOnClickListener { showAddNoteDialog(false, Clock.System.now().toLocalDateTime(
-            TimeZone.currentSystemDefault()).date) }
+        binding.notesSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.setFilter(newText.orEmpty())
+                return true
+            }
+        })
+
+        binding.addNoteFab.setOnClickListener {
+            showAddNoteDialog(false, localToday(), null)
+        }
     }
 
-    private fun showAddNoteDialog(isEdit: Boolean, date: LocalDate) {
+    private fun localToday(): LocalDate =
+        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+    private fun showAddNoteDialog(isEdit: Boolean, date: LocalDate, index: Int?) {
         var pickedDate = date
         val dialogViewBinding = DialogAddNoteBinding.inflate(layoutInflater)
         val dialog = BottomSheetDialog(this)
@@ -62,7 +83,7 @@ class DailyNotes : AppCompatActivity() {
         if (isEdit) {
             dialogViewBinding.dateStr.visibility = View.GONE
             dialogViewBinding.noteDate.visibility = View.GONE
-            dialogViewBinding.noteInput.setText(addiction.dailyNotes[date])
+            dialogViewBinding.noteInput.setText(addiction.dailyNotes[date]?.getOrNull(index ?: -1))
         } else {
             dialogViewBinding.noteDate.text = dateFormat.format(pickedDate.toJavaLocalDate())
             dialogViewBinding.noteDate.setOnClickListener {
@@ -70,9 +91,6 @@ class DailyNotes : AppCompatActivity() {
                     addOnPositiveButtonClickListener {
                         pickedDate = Instant.fromEpochMilliseconds(it).toLocalDateTime(TimeZone.UTC).date
                         dialogViewBinding.noteDate.text = dateFormat.format(pickedDate.toJavaLocalDate())
-                        if (addiction.dailyNotes.contains(pickedDate)) {
-                            dialogViewBinding.noteInput.setText(addiction.dailyNotes[pickedDate])
-                        }
                     }
                     show(supportFragmentManager, null)
                 }
@@ -82,8 +100,13 @@ class DailyNotes : AppCompatActivity() {
             if (dialogViewBinding.noteInput.isInputEmpty()) {
                 dialogViewBinding.noteInputLayout.error = getString(R.string.error_empty_note)
             } else {
-                addiction.dailyNotes[pickedDate] = dialogViewBinding.noteInput.text.toString()
+                val text = dialogViewBinding.noteInput.text.toString()
+                if (isEdit)
+                    addiction.dailyNotes[date]?.set(index ?: -1, text)
+                else
+                    addiction.dailyNotes.getOrPut(pickedDate) { mutableListOf() }.add(text)
                 updateNotesList()
+                if (!isEdit) adapter.expandDay(pickedDate)
                 dialog.dismiss()
             }
         }

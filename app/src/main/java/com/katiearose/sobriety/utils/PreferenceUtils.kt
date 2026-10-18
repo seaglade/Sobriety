@@ -12,7 +12,7 @@ fun SharedPreferences.getAddNoteAfterRelapsePref(): Boolean =
     getBoolean("add_note_after_relapse", true)
 
 fun SharedPreferences.getAverageAttemptsWindow(): Int =
-    Integer.parseInt(getString("average_attempts_window", "3")!!)
+    getString("average_attempts_window", "3")?.toIntOrNull()?.coerceAtLeast(0) ?: 3
 
 fun SharedPreferences.getAltTimelinePref(): Boolean = getBoolean("alt_timeline_view", false)
 
